@@ -12,37 +12,19 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
 
-    // public function addProduct(Request $request)
-    // {
-    //     try {
-    //         $user = Auth::user();
-    //         $cartId = $user->cart->id;
 
-    //         $cartProduct = new CartProduct;
-    //         $cartProduct->cart_id = $cartId;
-    //         $cartProduct->product_id = $request->input('product_id');
-    //         $cartProduct->quantity = 1;
-    //         $cartProduct->save();
-
-    //         return response()->json([
-    //             'message' => 'Product added to cart successfully',
-    //             'cart_product' => $cartProduct
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'message' => 'Error adding product to cart',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
 
     public function addProduct(Request $request)
     {
         $user = Auth::user();
-        // Create a new cart for the user
-        $cart = new Cart;
-        $cart->user_id = $user->id;
-        $cart->save();
+
+        // Check if a cart already exists for the user
+        if (!$user->cart) {
+            // Create a new cart for the user
+            $cart = new Cart;
+            $cart->user_id = $user->id;
+            $cart->save();
+        }
         $cartId = $user->cart->id;
 
         // Check if product already exists in cart
