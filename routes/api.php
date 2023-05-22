@@ -2,13 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CategoryController;
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\CartController;
 
 
 
@@ -30,6 +31,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:sanctum'], function () {
     //All secure URL's
     Route::post('/cart/addproduct', [CartController::class, 'addProduct']);
+    Route::get('/wishlists', [WishlistController::class, 'index']);
+    Route::post('/wishlists', [WishlistController::class, 'store']);
+    Route::delete('/wishlists/{id}', [WishlistController::class, 'destroy']);
 });
 
 Route::get('/products', [ProductController::class, 'index']);
