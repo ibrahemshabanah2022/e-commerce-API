@@ -74,6 +74,12 @@ class UserController extends Controller
         return response()->json($customer);
     }
 
+    public function getUser()
+    {
+        $user = auth()->user();
+        return response()->json($user);
+    }
+
     public function store(Request $request)
     {
         $customer = new User;
@@ -85,9 +91,9 @@ class UserController extends Controller
         return response()->json($customer, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $customer = User::find($id);
+        $customer = User::find(auth()->user()->id);
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->password = Hash::make($request->password);
