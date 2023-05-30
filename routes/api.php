@@ -38,6 +38,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/authuser', [UserController::class, 'getUser']);
     //update authenticated user data from progile
     Route::put('/updatecustomer', [UserController::class, 'update']);
+
+    Route::post('/logout', function (Request $request) {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logout successful'])
+            ->header('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+    });
 });
 
 Route::get('/products', [ProductController::class, 'index']);
@@ -68,3 +75,12 @@ Route::post('/logout', [UserController::class, 'logout']);
 
 
 Route::post('/checkout', [CheckoutController::class, 'checkout']);
+
+
+// ************logout***********
+
+// Route::post('/logout', function (Request $request) {
+//     $request->user()->currentAccessToken()->delete();
+
+//     return response()->json(['message' => 'Logout successful']);
+// })->middleware('auth:sanctum');
