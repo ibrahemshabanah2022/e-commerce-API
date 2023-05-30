@@ -31,6 +31,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:sanctum'], function () {
     //All secure URL's
     Route::post('/cart/addproduct', [CartController::class, 'addProduct']);
+    Route::middleware('cors')->group(function () {
+
+        Route::delete('/cart/deleteproduct', [CartController::class, 'removeProduct']);
+    });
+
     Route::get('/wishlists', [WishlistController::class, 'index']);
     Route::post('/wishlists', [WishlistController::class, 'store']);
     Route::delete('/wishlists/{id}', [WishlistController::class, 'destroy']);

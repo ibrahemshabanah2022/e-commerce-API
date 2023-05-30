@@ -52,7 +52,50 @@ class CartController extends Controller
     }
 
 
+    // public function removeProduct(Request $request)
+    // {
+    //     $user = Auth::user();
 
+    //     // Get the cart for the user
+    //     $cart = $user->cart;
+
+    //     // Get the cart product to remove
+    //     $cartProduct = $cart->products()->where('id', $request->input('cart_product_id'))->first();
+
+    //     // Remove the cart product from the cart
+    //     if ($cartProduct) {
+    //         $cartProduct->delete();
+    //         return response()->json([
+    //             'essage' => 'Product removed from cart successfully'
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             'essage' => 'Cart product not found'
+    //         ]);
+    //     }
+    // }
+    public function removeProduct(Request $request)
+    {
+        $user = Auth::user();
+
+        // Get the cart for the user
+        $cart = $user->cart;
+
+        // Get the cart product to remove
+        $cartProduct = $cart->cartProducts()->where('cart_product.product_id', $request->input('cart_product_id'))->first();
+
+        // Remove the cart product from the cart
+        if ($cartProduct) {
+            $cartProduct->delete();
+            return response()->json([
+                'essage' => 'Product removed from cart successfully'
+            ]);
+        } else {
+            return response()->json([
+                'essage' => 'Cart product not found'
+            ]);
+        }
+    }
     /**
      * Display a listing of the resource.
      */
