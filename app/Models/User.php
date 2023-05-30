@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Payment;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -46,11 +47,14 @@ class User extends Authenticatable
 
 
 
-
-    public function cart()
+    public function cart(): HasOne
     {
         return $this->hasOne(Cart::class);
     }
+    // public function cart()
+    // {
+    //     return $this->hasOne(Cart::class);
+    // }
 
     public function payments()
     {
