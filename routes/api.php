@@ -35,10 +35,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
         Route::delete('/cart/deleteproduct', [CartController::class, 'removeProduct']);
     });
+    Route::delete('/destroy', [WishlistController::class, 'destroy']);
+
 
     Route::get('/wishlists', [WishlistController::class, 'index']);
     Route::post('/wishlists', [WishlistController::class, 'store']);
-    Route::delete('/wishlists/{id}', [WishlistController::class, 'destroy']);
     //get authenticated user data
     Route::get('/authuser', [UserController::class, 'getUser']);
     //update authenticated user data from progile

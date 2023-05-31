@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
@@ -38,26 +39,28 @@ class WishlistController extends Controller
 
         return response()->json($wishlist);
     }
-    // public function store(Request $request)
-    // {
-    //     $wishlist = new Wishlist;
-    //     $wishlist->user_id = $request->user()->id;
-    //     $wishlist->product_id = $request->input('product_id');
-    //     $wishlist->save();
 
-    //     return response()->json($wishlist);
-    // }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request)
     {
-        $wishlist = Wishlist::findOrFail($id);
+        $user = Auth::user();
 
-        if ($wishlist->user_id !== $request->user()->id) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+        // Get the cart for the user
+        $cart = $user->wishlists;
+
+        // Get the cart product to remove
+        $cartProduct = $cart->where('product_id', $request->input('product_id'))->first();
+
+        // Remove the cart product from the cart
+        if ($cartProduct) {
+            $cartProduct->delete();
+            return response()->json([
+                'essage' => 'Product removed from wishlist successfully'
+            ]);
+        } else {
+            return response()->json([
+                'essage' => 'wishlist product not found'
+            ]);
         }
-
-        $wishlist->delete();
-
-        return response()->json(['success' => true]);
     }
 }
