@@ -26,6 +26,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \App\Http\Middleware\CorsMiddleware::class,
+        // \App\Http\Middleware\AdminMiddleware::class,
+
 
     ];
 
@@ -71,10 +73,13 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+
     ];
 
     protected $routeMiddleware = [
         //...
         'cors' => \App\Http\Middleware\CorsMiddleware::class,
+
     ];
 }

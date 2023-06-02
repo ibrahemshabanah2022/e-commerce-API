@@ -82,11 +82,6 @@ Route::post('/logout', [UserController::class, 'logout']);
 
 Route::post('/checkout', [CheckoutController::class, 'checkout']);
 
+/////////////////to make dashbord accsseable for only admin use : ->middleware('auth:sanctum', 'admin') ///////////////////
 
-// ************logout***********
-
-// Route::post('/logout', function (Request $request) {
-//     $request->user()->currentAccessToken()->delete();
-
-//     return response()->json(['message' => 'Logout successful']);
-// })->middleware('auth:sanctum');
+// Route::get('/dashbord', [dashbordController::class, 'index'])->middleware('auth:sanctum', 'admin');
