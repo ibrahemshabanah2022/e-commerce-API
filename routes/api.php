@@ -57,7 +57,7 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::post('/products', [ProductController::class, 'store']);
 Route::put('/products/{id}', [ProductController::class, 'update']);
-Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+Route::delete('/products/{id}', [ProductController::class, 'deleteProduct']);
 // ******************************************************************
 Route::get('/category', [CategoryController::class, 'index']);
 
@@ -83,5 +83,4 @@ Route::post('/logout', [UserController::class, 'logout']);
 Route::post('/checkout', [CheckoutController::class, 'checkout']);
 
 /////////////////to make dashbord accsseable for only admin use : ->middleware('auth:sanctum', 'admin') ///////////////////
-
-// Route::get('/dashbord', [dashbordController::class, 'index'])->middleware('auth:sanctum', 'admin');
+Route::get('/adminproducts', [ProductController::class, 'AdminIndex'])->middleware('auth:sanctum', 'admin');

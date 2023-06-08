@@ -21,6 +21,14 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
+    public function AdminIndex()
+    {
+        // Get all products from the database
+        $products = Product::all();
+        // Return a JSON response with the products
+        return response()->json($products);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -72,8 +80,6 @@ class ProductController extends Controller
         $product->title = $request->input('title');
         $product->price = $request->input('price');
         $product->description = $request->input('description');
-        $product->images = $request->input('images');
-        $product->category_id = $request->input('category_id');
         // Save the updated product to the database
         $product->save();
         // Return a JSON response with the updated product
@@ -86,13 +92,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteProduct($id)
     {
-        // Find the product with the given ID
-        $product = Product::findOrFail($id);
-        // Delete the product from the database
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
         $product->delete();
-        // Return a JSON response with a success message
-        return response()->json(['message' => 'Product deleted']);
+
+        return response()->json(['message' => 'Product deleted successfully'], 200);
     }
 }
