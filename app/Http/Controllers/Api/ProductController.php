@@ -51,19 +51,57 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Create a new product instance
-        $product = new Product();
-        // Set the product attributes from the request data
-        $product->title = $request->input('title');
-        $product->price = $request->input('price');
-        $product->description = $request->input('description');
-        $product->images = $request->input('images');
-        $product->category_id = $request->input('category_id');
-        // Save the product to the database
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'required|image',
+        ]);
+
+        $product = new Product;
+        $product->title = $validatedData['title'];
+        $product->description = $validatedData['description'];
+        $product->price = $validatedData['price'];
+        $product->category_id = $validatedData['category_id'];
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = 'images/' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $product->image = $imageName;
+        }
+
         $product->save();
-        // Return a JSON response with the saved product
-        return response()->json($product);
+
+        return response()->json(['message' => 'Product created successfully', 'product' => $product], 201);
     }
+    // public function store(Request $request)
+    // {
+    //     // Check if the request method is POST
+    //     if ($request->method() !== 'POST') {
+    //         return response()->json(['error' => 'Invalid request method'], 405);
+    //     }
+
+    //     // Create a new product instance
+    //     $product = new Product();
+    //     // Set the product attributes from the request data
+    //     $product->title = $request->input('title');
+    //     $product->price = $request->input('price');
+    //     $product->description = $request->input('description');
+    //     $product->category_id = $request->input('category_id');
+    //     // Save the image to the storage directory
+    //     if ($request->hasFile('image')) {
+    //         $image = $request->file('image');
+    //         $path = 'public/images/' . $image->getClientOriginalName();
+    //         $image->move(public_path('images'), $path);
+    //         $product->image = $path;
+    //     }
+    //     // Save the product to the database
+    //     $product->save();
+    //     // Return a JSON response with the saved product
+    //     return response()->json($product);
+    // }
 
     /**
      * Update the specified resource in storage.
