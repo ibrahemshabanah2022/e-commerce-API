@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -18,12 +19,15 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getProductCount(Request $request, $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $count = Product::where('category_id', $category->id)->count();
+
+        return response()->json([
+            'status' => 'success',
+            'count' => $count,
+        ]);
     }
 
     /**
@@ -79,8 +83,16 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function deleteCategory($id)
     {
-        //
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'category not found'], 404);
+        }
+
+        $category->delete();
+
+        return response()->json(['message' => 'category deleted successfully'], 200);
     }
 }

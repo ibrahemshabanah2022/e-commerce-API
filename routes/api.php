@@ -85,3 +85,5 @@ Route::post('/checkout', [CheckoutController::class, 'checkout']);
 Route::get('/adminproducts', [ProductController::class, 'AdminIndex'])->middleware('auth:sanctum', 'admin');
 Route::post('/products', [ProductController::class, 'store']);
 Route::post('/category', [CategoryController::class, 'store']);
+Route::get('/categories/{id}/product-count', [CategoryController::class, 'getProductCount']);
+Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
