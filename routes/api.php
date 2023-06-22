@@ -67,7 +67,7 @@ Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/getcustomers', [UserController::class, 'index2']);
 Route::get('/showcustomer/{customer}', [UserController::class, 'show']);
 Route::post('/signup', [UserController::class, 'store']);
-Route::delete('/deletecustomer/{customer}', [UserController::class, 'destroy']);
+Route::delete('/deletecustomer/{id}', [UserController::class, 'destroy']);
 
 //********************************************************
 // Route::middleware('session')->group(function () {
@@ -87,3 +87,7 @@ Route::post('/products', [ProductController::class, 'store']);
 Route::post('/category', [CategoryController::class, 'store']);
 Route::get('/categories/{id}/product-count', [CategoryController::class, 'getProductCount']);
 Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
+Route::put('/category/{id}', [CategoryController::class, 'update']);
+Route::get('/category/{id}', [CategoryController::class, 'show']);
+Route::put('/updateUser/{id}', [UserController::class, 'update2']);
+Route::get('/showUser/{id}', [UserController::class, 'show']);

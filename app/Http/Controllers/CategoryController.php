@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -59,9 +60,12 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        // Find the product with the given ID
+        $product = Category::findOrFail($id);
+        // Return a JSON response with the product
+        return response()->json($product);
     }
 
     /**
@@ -75,9 +79,30 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+
+
+
+        $category = Category::find($id);
+        $category->name = $request->input('name');
+
+
+        if ($request->hasFile('image')) {
+            $destination = public_path('images') . $category->image;
+            if (File::exists($destination)) {
+                File::delete($destination);
+            }
+
+            $image = $request->file('image');
+            $imageName = 'images/' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $category->image = $imageName;
+        }
+
+        $category->update();
+
+        return response()->json(['message' => 'Category created successfully', 'product' => $category], 201);
     }
 
     /**
