@@ -102,14 +102,38 @@ class UserController extends Controller
         return response()->json($customer);
     }
 
-    public function destroy($id)
+    public function update2(Request $request, $id)
     {
-        $customer = User::find($id);
-        $customer->delete();
-
-        return response()->json(null, 204);
+        $user = User::findOrFail($id);
+        // Update the user attributes from the request data
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->role = $request->input('role');
+        // Save the updated user to the database
+        $user->update();
+        // Return a JSON response with the updated user
+        return response()->json($user);
     }
 
+    // public function destroy($id)
+    // {
+    //     $customer = User::find($id);
+    //     $customer->delete();
+
+    //     return response()->json(null, 204);
+    // }
+    public function destroy($id)
+    {
+        $user = User::where('id', $id)->first();
+
+        if ($user === null) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully'], 200);
+    }
     public function logout()
     {
         Auth::logout();
