@@ -90,4 +90,4 @@ Route::post('/category/{id}', [CategoryController::class, 'update']);
 Route::get('/category/{id}', [CategoryController::class, 'show']);
 Route::put('/updateUser/{id}', [UserController::class, 'update2']);
 Route::get('/showUser/{id}', [UserController::class, 'show']);
-Route::put('/products/{id}', [ProductController::class, 'update']);
+Route::post('/products/{id}', [ProductController::class, 'update']);
