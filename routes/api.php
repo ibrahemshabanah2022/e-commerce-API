@@ -55,7 +55,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
-Route::put('/products/{id}', [ProductController::class, 'update']);
 Route::delete('/products/{id}', [ProductController::class, 'deleteProduct']);
 // ******************************************************************
 Route::get('/category', [CategoryController::class, 'index']);
@@ -87,7 +86,8 @@ Route::post('/products', [ProductController::class, 'store']);
 Route::post('/category', [CategoryController::class, 'store']);
 Route::get('/categories/{id}/product-count', [CategoryController::class, 'getProductCount']);
 Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
-Route::put('/category/{id}', [CategoryController::class, 'update']);
+Route::post('/category/{id}', [CategoryController::class, 'update']);
 Route::get('/category/{id}', [CategoryController::class, 'show']);
 Route::put('/updateUser/{id}', [UserController::class, 'update2']);
 Route::get('/showUser/{id}', [UserController::class, 'show']);
+Route::put('/products/{id}', [ProductController::class, 'update']);
