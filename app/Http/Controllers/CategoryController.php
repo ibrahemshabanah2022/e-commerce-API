@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 
 class CategoryController extends Controller
 {
@@ -81,28 +83,20 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $category = Category::findOrFail($id);
 
-
-
-        $category = Category::find($id);
         $category->name = $request->input('name');
 
-
         if ($request->hasFile('image')) {
-            $destination = public_path('images') . $category->image;
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
-
             $image = $request->file('image');
             $imageName = 'images/' . time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $category->image = $imageName;
         }
 
-        $category->update();
+        $category->save();
 
-        return response()->json(['message' => 'Category created successfully', 'product' => $category], 201);
+        return response()->json(['message' => 'Category updated successfully', 'category' => $category], 201);
     }
 
     /**
