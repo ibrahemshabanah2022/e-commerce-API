@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -23,10 +24,16 @@ class ProductController extends Controller
 
     public function AdminIndex()
     {
-        // Get all products from the database
-        $products = Product::all();
+
+
+        $products = Product::with('category')->get();
+
+
         // Return a JSON response with the products
-        return response()->json($products);
+        return response()->json(
+            // 'ProductCategory' => $CategoryProduct,
+            $products
+        );
     }
 
     /**
