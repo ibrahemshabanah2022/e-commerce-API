@@ -125,6 +125,13 @@ class ProductController extends Controller
         $product->title = $request->input('title');
         $product->price = $request->input('price');
         $product->description = $request->input('description');
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = 'images/' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $product->image = $imageName;
+        }
         // Save the updated product to the database
         $product->save();
         // Return a JSON response with the updated product
