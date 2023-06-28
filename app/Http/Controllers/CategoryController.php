@@ -35,6 +35,27 @@ class CategoryController extends Controller
         // return response()->json($category);
     }
 
+    public function index2()
+    {
+        // Get all category from the database
+        $categories = Category::all();
+
+        $productCounts = [];
+
+        foreach ($categories as $category) {
+            $count = Product::where('category_id', $category->id)->count();
+            $productCounts[$category->id] = $count;
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'productCounts' => $productCounts,
+            'categories' => $categories
+        ]);
+        // Return a JSON response with the category
+        // return response()->json($category);
+    }
+
     public function getProductCount(Request $request, $id)
     {
         $category = Category::findOrFail($id);

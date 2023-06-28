@@ -82,12 +82,13 @@ Route::post('/checkout', [CheckoutController::class, 'checkout']);
 
 /////////////////to make dashbord accsseable for only admin use : ->middleware('auth:sanctum', 'admin') ///////////////////
 Route::get('/adminproducts', [ProductController::class, 'AdminIndex'])->middleware('auth:sanctum', 'admin');
-Route::post('/products', [ProductController::class, 'store']);
-Route::post('/category', [CategoryController::class, 'store']);
-Route::get('/categories/{id}/product-count', [CategoryController::class, 'getProductCount']);
-Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
-Route::post('/category/{id}', [CategoryController::class, 'update']);
-Route::get('/category/{id}', [CategoryController::class, 'show']);
-Route::put('/updateUser/{id}', [UserController::class, 'update2']);
-Route::get('/showUser/{id}', [UserController::class, 'show']);
-Route::post('/products/{id}', [ProductController::class, 'update']);
+Route::post('/products', [ProductController::class, 'store'])->middleware('auth:sanctum', 'admin');
+Route::post('/category', [CategoryController::class, 'store'])->middleware('auth:sanctum', 'admin');
+Route::get('/categories/{id}/product-count', [CategoryController::class, 'getProductCount'])->middleware('auth:sanctum', 'admin');
+Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory'])->middleware('auth:sanctum', 'admin');
+Route::post('/category/{id}', [CategoryController::class, 'update'])->middleware('auth:sanctum', 'admin');
+Route::get('/category/{id}', [CategoryController::class, 'show'])->middleware('auth:sanctum', 'admin');
+Route::put('/updateUser/{id}', [UserController::class, 'update2'])->middleware('auth:sanctum', 'admin');
+Route::get('/showUser/{id}', [UserController::class, 'show'])->middleware('auth:sanctum', 'admin');
+Route::post('/products/{id}', [ProductController::class, 'update'])->middleware('auth:sanctum', 'admin');
+Route::get('/categoryAdmin', [CategoryController::class, 'index2'])->middleware('auth:sanctum', 'admin');
