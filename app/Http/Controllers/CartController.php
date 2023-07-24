@@ -101,7 +101,43 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+
+        // Get the cart for the user
+        $cart = $user->cart;
+
+        // Get the cart product to remove
+        $cartProductIds = $cart->cartProducts->pluck('id');
+        $products = Product::whereIn('id', $cartProductIds)->get();
+        $cartProduct = $cart->cartProducts;
+
+        return response()->json([
+            'products' =>  $products,
+            'cartProduct' => $cartProduct
+        ]);
+    }
+
+    public function increaseQuantity(Request $request)
+    {
+        $product = CartProduct::where('cart_product.product_id', $request->input('id'))->first();
+        $product->quantity += 1;
+        $product->save();
+
+        return response()->json([
+            'essage' => 'Quantity increased successfully',
+            'quantity' => $product->quantity
+        ]);
+    }
+    public function decreaseQuantity(Request $request)
+    {
+        $product = CartProduct::where('cart_product.product_id', $request->input('id'))->first();
+        $product->quantity -= 1;
+        $product->save();
+
+        return response()->json([
+            'essage' => 'Quantity decreased successfully',
+            'quantity' => $product->quantity
+        ]);
     }
 
     /**

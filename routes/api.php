@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/authuser', [UserController::class, 'getUser']);
     //update authenticated user data from progile
     Route::put('/updatecustomer', [UserController::class, 'update']);
+    Route::get('/cartProducts', [CartController::class, 'index']);
 
     Route::post('/logout', function (Request $request) {
         $request->user()->currentAccessToken()->delete();
@@ -71,6 +72,8 @@ Route::get('/getcustomers', [UserController::class, 'index2']);
 Route::get('/showcustomer/{customer}', [UserController::class, 'show']);
 Route::post('/signup', [UserController::class, 'store']);
 Route::delete('/deletecustomer/{id}', [UserController::class, 'destroy']);
+Route::post('/cart/increase-quantity', [CartController::class, 'increaseQuantity']);
+Route::post('/cart/decrease-quantity', [CartController::class, 'decreaseQuantity']);
 
 //********************************************************
 // Route::middleware('session')->group(function () {
