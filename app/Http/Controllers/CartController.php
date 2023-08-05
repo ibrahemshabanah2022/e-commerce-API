@@ -106,7 +106,7 @@ class CartController extends Controller
         // Get the cart for the user
         $cart = $user->cart;
 
-        // Get the cart product to remove
+        // Get the cart product 
         $cartProductIds = $cart->cartProducts->pluck('id');
         $products = Product::whereIn('id', $cartProductIds)->get();
         $cartProduct = $cart->cartProducts;

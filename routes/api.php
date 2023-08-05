@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         return response()->json(['message' => 'Logout successful'])
             ->header('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
     });
+    Route::post('/checkout', [CheckoutController::class, 'checkout']);
 });
 
 
@@ -85,7 +86,6 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
 
 
-Route::post('/checkout', [CheckoutController::class, 'checkout']);
 
 /////////////////to make dashbord accsseable for only admin use : ->middleware('auth:sanctum', 'admin') ///////////////////
 Route::get('/adminproducts', [ProductController::class, 'AdminIndex'])->middleware('auth:sanctum', 'admin');
