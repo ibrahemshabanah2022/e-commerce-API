@@ -26,6 +26,7 @@ class CartController extends Controller
             // Create a new cart for the user
             $cart = new Cart;
             $cart->user_id = $user->id;
+
             $cart->save();
         }
 
@@ -43,6 +44,7 @@ class CartController extends Controller
         $cartProduct->cart_id = $cart->id;
         $cartProduct->product_id = $request->input('product_id');
         $cartProduct->quantity = 1;
+
         $cartProduct->save();
 
         return response()->json([
@@ -52,35 +54,14 @@ class CartController extends Controller
     }
 
 
-    // public function removeProduct(Request $request)
-    // {
-    //     $user = Auth::user();
 
-    //     // Get the cart for the user
-    //     $cart = $user->cart;
-
-    //     // Get the cart product to remove
-    //     $cartProduct = $cart->products()->where('id', $request->input('cart_product_id'))->first();
-
-    //     // Remove the cart product from the cart
-    //     if ($cartProduct) {
-    //         $cartProduct->delete();
-    //         return response()->json([
-    //             'essage' => 'Product removed from cart successfully'
-    //         ]);
-    //     } else {
-    //         return response()->json([
-    //             'essage' => 'Cart product not found'
-    //         ]);
-    //     }
-    // }
     public function removeProduct(Request $request)
     {
         $user = Auth::user();
 
         // Get the cart for the user
         $cart = $user->cart;
-
+        // dd($cart);
         // Get the cart product to remove
         $cartProduct = $cart->cartProducts()->where('cart_product.product_id', $request->input('cart_product_id'))->first();
 
@@ -95,6 +76,27 @@ class CartController extends Controller
                 'essage' => 'Cart product not found'
             ]);
         }
+    }
+
+    public function removeAllProducts(Request $request)
+    {
+        //remove all products for authenticated  user  from cart 
+        $user = Auth::user();
+
+        // Get the cart for the user
+        $cart = $user->cart;
+        $cartID =  $cart->id;
+        // dd($cartID);
+        // Get the cart product to remove
+        $cartProduct = $cart->cartProducts()->where('cart_product.cart_id', $cartID)->get();
+
+        // Remove the cart product from the cart
+        foreach ($cartProduct as $cartProduct) {
+            $cartProduct->delete();
+        }
+        return response()->json([
+            'message' => 'All products removed from cart successfully'
+        ]);
     }
     /**
      * Display a listing of the resource.

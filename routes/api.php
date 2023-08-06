@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             ->header('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
     });
     Route::post('/checkout', [CheckoutController::class, 'checkout']);
+    Route::delete('/deleteProducts', [CartController::class, 'removeAllProducts']);
 });
 
 
