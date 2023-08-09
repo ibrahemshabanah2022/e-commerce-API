@@ -14,14 +14,24 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     // Get all products from the database
+    //     $products = Product::all();
+    //     // Return a JSON response with the products
+    //     return response()->json($products);
+    // }
     public function index()
     {
-        // Get all products from the database
-        $products = Product::all();
-        // Return a JSON response with the products
-        return response()->json($products);
+        $products = Product::paginate(5);
+        return response()->json([
+            'data' => $products->items(),
+            'links' => [
+                'previous' => $products->previousPageUrl(),
+                'next' => $products->nextPageUrl(),
+            ],
+        ]);
     }
-
     public function AdminIndex()
     {
 
