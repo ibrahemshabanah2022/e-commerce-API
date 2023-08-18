@@ -23,7 +23,7 @@ class ProductController extends Controller
     // }
     public function index()
     {
-        $products = Product::paginate(5);
+        $products = Product::paginate(20);
         return response()->json([
             'data' => $products->items(),
             'links' => [
@@ -32,6 +32,31 @@ class ProductController extends Controller
             ],
         ]);
     }
+    //get products by there category
+    public function getProductByCategory(Request $request)
+    {
+
+        $ProductByCategory = Product::where('category_id', $request->input('category_id'))->get();
+        $getCategory = category::where('id', $request->input('category_id'))->get();
+
+        return response()->json([
+
+            'ProductByCategory' =>   $ProductByCategory,
+            'getCategory' =>   $getCategory
+
+        ]);
+    }
+
+    public function filterProductsBYprice(Request $request)
+    {
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+
+        $products = Product::whereBetween('price', [$minPrice, $maxPrice])->get();
+
+        return response()->json($products);
+    }
+
     public function AdminIndex()
     {
 

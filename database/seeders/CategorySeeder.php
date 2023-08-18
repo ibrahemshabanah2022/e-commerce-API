@@ -11,7 +11,7 @@ class CategorySeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             Category::create([
                 'name' => $faker->word(5),
                 'image' => $faker->imageUrl(),

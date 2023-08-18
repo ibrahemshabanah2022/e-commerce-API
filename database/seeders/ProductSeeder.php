@@ -18,7 +18,7 @@ class ProductSeeder extends Seeder
 
         $categories = Category::all()->pluck('id')->toArray();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             Product::create([
                 'title' => $faker->title,
                 'price' => $faker->randomNumber(5),

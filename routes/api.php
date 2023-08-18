@@ -27,7 +27,7 @@ use App\Http\Controllers\Api\ProductController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+//put secure url's here that user should be authenticated to use
 Route::group(['middleware' => 'auth:sanctum'], function () {
     //All secure URL's
     Route::post('/cart/addproduct', [CartController::class, 'addProduct']);
@@ -55,10 +55,15 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/checkout', [CheckoutController::class, 'checkout']);
     Route::delete('/deleteProducts', [CartController::class, 'removeAllProducts']);
 });
+//end secure url's
 
 
+//get products by there category
+Route::get('/getProductByCategory', [ProductController::class, 'getProductByCategory']);
+//filter products by price
+Route::get('/filterProductsBYprice', [ProductController::class, 'filterProductsBYprice']);
 
-
+Route::get('/getCategory', [ProductController::class, 'getCategory']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
