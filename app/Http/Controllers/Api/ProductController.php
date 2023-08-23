@@ -68,7 +68,6 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
-
     public function AdminIndex()
     {
 
