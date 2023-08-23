@@ -109,7 +109,7 @@ class CartController extends Controller
         $cart = $user->cart;
 
         // Get the cart product 
-        $cartProductIds = $cart->cartProducts->pluck('id');
+        $cartProductIds = $cart->cartProducts->pluck('product_id');
         $products = Product::whereIn('id', $cartProductIds)->get();
         $cartProduct = $cart->cartProducts;
 

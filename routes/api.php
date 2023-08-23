@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     });
     Route::post('/checkout', [CheckoutController::class, 'checkout']);
     Route::delete('/deleteProducts', [CartController::class, 'removeAllProducts']);
+    Route::post('/success', [CheckoutController::class, 'success']);
 });
 //end secure url's
 

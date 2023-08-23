@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use Stripe\Stripe;
+use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
 use Stripe\StripeClient;
+use App\Models\CartProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 // require 'vendor/autoload.php';
 
@@ -49,8 +52,10 @@ class CheckoutController extends Controller
         $checkout_session = $stripe->checkout->sessions->create([
             'line_items' => [$lineItems],
             'mode' => 'payment',
-            'success_url' => 'http://example.com',
-            'cancel_url' => 'http://example.com',
+            'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}",
+            'cancel_url' => route('checkout.cancel', [], true),
+            // 'success_url' => 'http://localhost:5173/PaymentSuccessPage?session_id={CHECKOUT_SESSION_ID}',
+            // 'cancel_url' => 'http://example.com',
             'payment_method_types' => ['card'],
             'submit_type' => 'pay',
         ]);
@@ -66,4 +71,83 @@ class CheckoutController extends Controller
             'url' =>  $checkout_session->url
         ]);
     }
+
+    public function success(Request $request)
+    {
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $sessionId = $request->get('session_id');
+
+
+        $session = \Stripe\Checkout\Session::retrieve($sessionId);
+        if (!$session) {
+            throw new NotFoundHttpException;
+        }
+        // $customer = \Stripe\Customer::retrieve($session->customer);
+
+        $order = Order::where('session_id', $session->id)->first();
+        if (!$order) {
+            throw new NotFoundHttpException();
+        }
+        if ($order->status === 'unpaid') {
+            $order->status = 'paid';
+            $order->save();
+        }
+
+        $user_id = $order->user_id;
+        $cart = Cart::where('user_id', $user_id)->first();
+
+
+        $cartId = $cart->id;
+        // dd($cartId);
+        $cart->cartproducts()->where('cart_id', $cartId)->delete();
+
+
+
+
+        return view('product.checkout-success');
+    }
+    // public function success(Request $request)
+    // {
+    //     $sessionId = $request->get('session_id');
+
+    //     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
+
+    //     $session = $stripe->checkout->sessions->retrieve($sessionId);
+    //     if (!$session) {
+    //         throw new NotFoundHttpException;
+    //     }
+    //     $customer = $stripe->customers->retrieve($session->customer);
+
+
+    //     $order = Order::where('session_id', $session->id)->where('status', 'unpaid')->first();
+    //     if (!$order) {
+    //         throw new NotFoundHttpException();
+    //     }
+    //     if ($order->status === 'unpaid') {
+    //         $order->status = 'paid';
+    //         $order->save();
+    //     }
+    //     ///////////////////////////////////
+    //     \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+    //     $sessionId = $request->get('session_id');
+    //     // dd($sessionId);
+
+    //     $session = \Stripe\Checkout\Session::retrieve($sessionId);
+    //     if (!$session) {
+    //         throw new NotFoundHttpException;
+    //     }
+    //     $customer = \Stripe\Customer::retrieve($session->customer);
+
+    //     $order = Order::where('session_id', $session->id)->first();
+    //     if (!$order) {
+    //         throw new NotFoundHttpException();
+    //     }
+    //     if ($order->status === 'unpaid') {
+    //         $order->status = 'paid';
+    //         $order->save();
+    //     }
+
+
+    //     return response()->json($customer);
+    // }
 }

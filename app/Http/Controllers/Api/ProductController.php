@@ -47,14 +47,24 @@ class ProductController extends Controller
         ]);
     }
 
+    // public function filterProductsBYprice(Request $request)
+    // {
+    //     $categoryId = $request->input('category_id');
+
+    //     $minPrice = $request->input('min_price');
+    //     $maxPrice = $request->input('max_price');
+
+    //     $products = Product::where('category_id', $categoryId)->whereBetween('price', [$minPrice, $maxPrice])->get();
+
+    //     return response()->json($products);
+    // }
     public function filterProductsBYprice(Request $request)
     {
-        $categoryId = $request->input('category_id');
-
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
+        $categoryId = $request->input('category_id');
 
-        $products = Product::where('category_id', $categoryId)->whereBetween('price', [$minPrice, $maxPrice])->get();
+        $products = Product::where('price', '>=', $minPrice)->where('price', '<=', $maxPrice)->where('category_id', '=', $categoryId)->get();
 
         return response()->json($products);
     }
