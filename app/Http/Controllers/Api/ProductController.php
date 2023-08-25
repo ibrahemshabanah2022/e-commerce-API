@@ -35,14 +35,19 @@ class ProductController extends Controller
     //get products by there category
     public function getProductByCategory(Request $request)
     {
+        $categoryId = $request->input('category_id');
 
-        $ProductByCategory = Product::where('category_id', $request->input('category_id'))->get();
-        $getCategory = category::where('id', $request->input('category_id'))->get();
+        $ProductByCategory = Product::where('category_id',  $categoryId)->paginate(9);
+        $getCategory = Category::where('id', $request->input('category_id'))->get();
 
         return response()->json([
 
-            'ProductByCategory' =>   $ProductByCategory,
-            'getCategory' =>   $getCategory
+            'ProductByCategory' =>   $ProductByCategory->items(),
+            'getCategory' =>   $getCategory,
+            'links' => [
+                'previous' => $ProductByCategory->previousPageUrl(),
+                'next' => $ProductByCategory->nextPageUrl(),
+            ],
 
         ]);
     }
