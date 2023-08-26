@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
@@ -55,6 +56,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/checkout', [CheckoutController::class, 'checkout']);
     Route::delete('/deleteProducts', [CartController::class, 'removeAllProducts']);
     Route::post('/success', [CheckoutController::class, 'success']);
+    //enable user to write comment for product
+    Route::post('/PostComment', [CommentController::class, 'store']);
 });
 //end secure url's
 

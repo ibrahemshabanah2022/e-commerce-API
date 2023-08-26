@@ -20,4 +20,8 @@ class Product extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
