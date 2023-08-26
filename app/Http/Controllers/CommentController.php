@@ -10,9 +10,18 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $productId = $request->input('product_id');
+        $comments = Comment::where('product_id', $productId)
+            ->with('user')
+            ->get();
+
+        $data = [
+            'comments' => $comments->toArray(),
+        ];
+
+        return response()->json($data);
     }
 
     /**

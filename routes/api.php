@@ -86,6 +86,9 @@ Route::delete('/deletecustomer/{id}', [UserController::class, 'destroy']);
 Route::post('/cart/increase-quantity', [CartController::class, 'increaseQuantity']);
 Route::post('/cart/decrease-quantity', [CartController::class, 'decreaseQuantity']);
 
+Route::get('/getComments', [CommentController::class, 'index']);
+
+
 //********************************************************
 // Route::middleware('session')->group(function () {
 //     // Your protected routes here
