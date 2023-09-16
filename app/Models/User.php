@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Comment;
 use App\Models\Payment;
 use Laravel\Sanctum\HasApiTokens;
@@ -69,5 +70,9 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

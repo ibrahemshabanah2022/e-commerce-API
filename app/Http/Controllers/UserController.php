@@ -27,28 +27,6 @@ class UserController extends Controller
             ], 404);
         }
 
-        // // Create a new cart for the user
-        // $cart = new Cart();
-        // $cart->user_id = $user->id;
-        // $cart->save();
-
-
-
-        // Save the cart ID in the session
-        // $request->session()->put('cart_id', $cart->id);
-
-
-        //check if the cart_id is stored in session or not
-        // if (Session::has('cart_id')) {
-        //     $message = 'The cart ID is stored in the session.';
-        //     return response()->json(['message' => $message]);
-        // } else {
-        //     $message = 'The cart ID is not stored in the session.';
-        //     return response()->json(['message' => $message]);
-        // }
-
-
-
 
         $token = $user->createToken('my-app-token')->plainTextToken;
 
@@ -57,7 +35,7 @@ class UserController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return response()->json($response, 201);
     }
 
 

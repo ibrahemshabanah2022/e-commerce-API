@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
@@ -99,6 +100,7 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
 
 
+Route::get('/orders', [OrderController::class, 'index']);
 
 /////////////////to make dashbord accsseable for only admin use : ->middleware('auth:sanctum', 'admin') ///////////////////
 Route::get('/adminproducts', [ProductController::class, 'AdminIndex'])->middleware('auth:sanctum', 'admin');
@@ -112,3 +114,5 @@ Route::put('/updateUser/{id}', [UserController::class, 'update2'])->middleware('
 Route::get('/showUser/{id}', [UserController::class, 'show'])->middleware('auth:sanctum', 'admin');
 Route::post('/products/{id}', [ProductController::class, 'update'])->middleware('auth:sanctum', 'admin');
 Route::get('/categoryAdmin', [CategoryController::class, 'index2'])->middleware('auth:sanctum', 'admin');
+Route::get('/orderDetails/{id}', [OrderController::class, 'show'])->middleware('auth:sanctum', 'admin');
+Route::get('/showOrder/{id}', [OrderController::class, 'showOrder'])->middleware('auth:sanctum', 'admin');
