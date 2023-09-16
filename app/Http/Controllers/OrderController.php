@@ -27,7 +27,7 @@ class OrderController extends Controller
     {
         // Find the product with the given ID
         // $orderProduct = ProductOrder::where('order_id', $id)->get();
-        $orderProduct = ProductOrder::with('product')->with('order')->where('order_id', $id)->get();
+        $orderProduct = ProductOrder::with('order')->where('order_id', $id)->get();
 
         // Return a JSON response with the product
         return response()->json($orderProduct);

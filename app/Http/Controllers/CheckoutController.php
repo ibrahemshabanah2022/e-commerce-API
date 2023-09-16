@@ -71,7 +71,9 @@ class CheckoutController extends Controller
         foreach ($cartProducts as $cartProduct) {
             DB::table('product_order')->insert([
                 'order_id' => $order->id,
-                'product_id' => $cartProduct->product->id,
+                'ProductName' => $cartProduct->product->title,
+                'ProductPrice' => $cartProduct->product->price,
+
                 'quantity' => $cartProduct->quantity,
             ]);
         }
