@@ -74,7 +74,7 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'image' => 'required|image',
+            // 'image' => 'required|image',
         ]);
 
         $category = new Category;
