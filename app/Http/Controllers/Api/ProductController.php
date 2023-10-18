@@ -23,7 +23,7 @@ class ProductController extends Controller
     // }
     public function index()
     {
-        $products = Product::paginate(20);
+        $products = Product::paginate(5);
         return response()->json([
             'data' => $products->items(),
             'links' => [
@@ -52,7 +52,7 @@ class ProductController extends Controller
         ]);
     }
 
-   
+
     public function filterProductsBYprice(Request $request)
     {
         $minPrice = $request->input('min_price');
